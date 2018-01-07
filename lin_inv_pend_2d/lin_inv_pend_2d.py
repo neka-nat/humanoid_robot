@@ -8,9 +8,9 @@ def linear_inv_pend(x, xdot, zmp, l_pend=2.0, dt=0.001):
     State equation for linear inverted pendulum
     """
     x2dot = g / l_pend * (x - zmp)
-    xdot = xdot + x2dot * dt
-    x = x + xdot * dt
-    return x, xdot
+    xdot_n = xdot + x2dot * dt
+    x_n = x + xdot * dt
+    return x_n, xdot_n
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
@@ -39,8 +39,8 @@ if __name__ == "__main__":
     fig = plt.figure()
     ax = fig.add_subplot(111, aspect='equal')
     line, = ax.plot([p_sup, x_global], [0, l_pend], '-o')
-    plt.xlim(-1, 5)
-    plt.ylim(-1, 3)
+    plt.xlim(-1, sum(step_len) + 1)
+    plt.ylim(-1, l_pend + 1)
     def update_draw(i):
         global x_global, x, xdot, p_sup, step
         x, xdot = linear_inv_pend(x, xdot, zmp, l_pend)
