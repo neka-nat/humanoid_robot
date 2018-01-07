@@ -3,11 +3,11 @@ from __future__ import print_function
 import numpy as np
 from scipy.constants import g
 
-def linear_inv_pend(x, xdot, y, k, zmp, l_pend=2.0, dt=0.001):
+def linear_inv_pend(x, xdot, y, k, p_star, l_pend=2.0, dt=0.001):
     """
     State equation for linear inverted pendulum
     """
-    x2dot = g / l_pend * (x - zmp)
+    x2dot = g / l_pend * (x - p_star)
     xdot_n = xdot + x2dot * dt
     x_n = x + xdot * dt
     y_n = y + k * xdot * dt
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     xdot = 0.0
     y = l_pend
     step = 0  # step number
-    zmp = 0.0
+    p_star = 0.0
     x_global = x + p_sup  # Cog in global
 
     fig = plt.figure()
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     def update_draw(i):
         global x_global, x, xdot, y, p_sup, step
         x, xdot, y = linear_inv_pend(x, xdot, y, stair_height / step_len[step],
-                                     zmp, l_pend)
+                                     p_star, l_pend)
         if step < n_step and x >= x_f[step]:
             x = x_f[step] - step_len[step]
             xdot = xdot_f[step]

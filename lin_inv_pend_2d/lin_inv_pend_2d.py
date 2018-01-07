@@ -3,11 +3,11 @@ from __future__ import print_function
 import numpy as np
 from scipy.constants import g
 
-def linear_inv_pend(x, xdot, zmp, l_pend=2.0, dt=0.001):
+def linear_inv_pend(x, xdot, p_star, l_pend=2.0, dt=0.001):
     """
     State equation for linear inverted pendulum
     """
-    x2dot = g / l_pend * (x - zmp)
+    x2dot = g / l_pend * (x - p_star)
     xdot_n = xdot + x2dot * dt
     x_n = x + xdot * dt
     return x_n, xdot_n
@@ -33,7 +33,7 @@ if __name__ == "__main__":
     x = x_start
     xdot = 0.0
     step = 0
-    zmp = 0.0
+    p_star = 0.0
     x_global = x + p_sup
 
     fig = plt.figure()
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     plt.ylim(-1, l_pend + 1)
     def update_draw(i):
         global x_global, x, xdot, p_sup, step
-        x, xdot = linear_inv_pend(x, xdot, zmp, l_pend)
+        x, xdot = linear_inv_pend(x, xdot, p_star, l_pend)
         if step < n_step and x >= x_f[step]:
             x = x_f[step] - step_len[step]
             xdot = xdot_f[step]
